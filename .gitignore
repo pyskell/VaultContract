@@ -43,3 +43,6 @@ docs/utils/__pycache__
 .idea
 browse.VC.db
 CMakeLists.txt.user
+
+# Project-specific excludes
+config.sol

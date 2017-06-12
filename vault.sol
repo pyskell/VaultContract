@@ -1,4 +1,5 @@
 pragma solidity ^0.4.10;
+// import * from "./config.sol";
 
 /// @title Managed Withdrawal - Vault Contract
 
@@ -13,15 +14,15 @@ pragma solidity ^0.4.10;
 /// Function which will empty out the Vault Contract into a pre-defined wallet.
 
 contract Vault {
-	address constant _managerAddress;
+	address constant _managerAddress = 0;
 	// TODO: Maybe allow for the _panicAddress to be encrypted.
-	address constant _panicAddress;
+	address constant _panicAddress = 0;
 	uint _lastTransferTime = 0;
 
 	/// The minimum number of seconds you want to pass before allowing the next withdrawal.
-	uint constant _timeLimit;
+	uint constant _timeLimit = 3600;
 	/// The maximum amount of ETC you want withdrawn per withdrawal.
-	uint constant _valueLimit;
+	uint constant _valueLimit = 1;
 
 	event PanicTransfer(address sender, bool success);
 	event Withdrawal(address sender, uint value, bool success);
@@ -30,12 +31,6 @@ contract Vault {
 		// block.timestamp can have an error of 900 seconds so to be safe we don't allow very short timeLimits
 		if (_timeLimit < 900) {throw;}
 		if (_valueLimit == 0) {throw;}
-		// _lastTransferTime = 0;
-
-		// _managerAddress = managerAddress;
-		// _panicAddress = panicAddress;
-		// _timeLimit = timeLimit;
-		// _valueLimit = valueLimit;
 	}
 
 	/// Dump the remaining balance to a pre-programmed safe address that does not include a balance.
