@@ -57,6 +57,16 @@ contract Vault {
 
 	}
 
+	/// Track a deposit from the sender's account
+	function() payable {
+		managerBalances[msg.sender] += msg.value;
+	}
+	
+	/// Make a deposit into a specific account.
+	function deposit(address from) payable {
+		managerBalances[from] += msg.value;
+	}
+
 	/// Withdraw a specified balance provided that the correct address is requesting it and it's within the withdrawal limits
 	function withdraw(uint value) returns (bool){
 		// if (managerBalances[msg.sender] == 0){
@@ -65,13 +75,14 @@ contract Vault {
 		// }
 
 		uint managerBalance = managerBalances[msg.sender];
-		bool blockAllowed = block.timestamp > lastTransferTimes[msg.sender] + timeLimits[msg.sender];
+		bool timeLimitAllowed = block.timestamp > lastTransferTimes[msg.sender] + timeLimits[msg.sender];
 		bool valueAllowed = value <= valueLimits[msg.sender];
 		bool enoughBalance = managerBalance > 0 && this.balance >= managerBalance;
 
-		if (blockAllowed && valueAllowed && enoughBalance){
+		if (timeLimitAllowed && valueAllowed && enoughBalance){
 			// TODO: There's no guarantee that the transfer will go through on the current block.
 			// TODO: Need to decide if that is important or not.
+			managerBalances[msg.sender] -= value;
 			lastTransferTimes[msg.sender] = block.timestamp;
 			msg.sender.transfer(value);
 
@@ -81,5 +92,9 @@ contract Vault {
 			Withdrawal(msg.sender, value, false);			
 			return false;
 		}
+	}
+
+	function getBalance() returns (uint) {
+		return managerBalances[msg.sender];
 	}
 }
