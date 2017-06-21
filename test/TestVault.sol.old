@@ -12,10 +12,5 @@ contract TestVault {
     vault.send(value);
 
     Assert.equal(vault.getBalance(), value, "Manager Address should have a balance of 1");
-    // Assert.equal(true, false, "ehh");
-  }
-
-    function () {
-    // This will NOT be executed when Ether is sent. \o/
   }
 }
