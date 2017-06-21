@@ -19,7 +19,7 @@ contract('Vault', function(accounts){
         });
     }
 
-    it("should return true"), function(){
+    it("should assert true"), function(){
         return assert.equal(true, true, "true is true");
     }
 });
